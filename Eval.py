@@ -2,10 +2,13 @@
 Evaluation harness for your RAG system.
 
 Usage (from the same folder as RagV1.py):
-    python eval.py --tag baseline              # retrieval metrics only (cheap, fast)
-    python eval.py --tag baseline --answers    # also generate and check answers (uses Gemini)
+    python eval.py --tag baseline-v2              # retrieval metrics only (cheap, fast)
+    python eval.py --tag baseline-v2 --answers    # also generate and check answers (uses Gemini)
 
-Every run is appended to results.csv so you can compare experiments.
+- Answers are cached in answers_<tag>.json, so if the Gemini server is busy and some
+  questions fail, just run the SAME command again: finished questions are skipped.
+- Use a NEW tag for every experiment (the cache belongs to the tag).
+- A row is added to results.csv only when every question has been processed.
 """
 import argparse
 import csv
@@ -35,8 +38,14 @@ def main():
     with open("Goldenset.json", encoding="utf-8") as f:
         golden = json.load(f)
 
+    cache_file = f"answers_{args.tag}.json"
+    cache = {}
+    if args.answers and os.path.exists(cache_file):
+        with open(cache_file, encoding="utf-8") as f:
+            cache = json.load(f)
+
     hits, rr_sum, scored = 0, 0.0, 0
-    ans_pass, ans_total = 0, 0
+    ans_pass, ans_total, errors = 0, 0, 0
 
     print(f"{'#':<3} {'result':<6} {'rank':<5} {'retrieved pages':<22} question")
     for i, item in enumerate(golden, 1):
@@ -59,14 +68,26 @@ def main():
         print(f"{i:<3} {status:<6} {str(rank or '-'):<5} {str(pages):<22} {item['q'][:60]}")
 
         if args.answers:
-            context = "\n\n".join(f"[page {c['page']}]\n{c['text']}" for _, c in results)
-            answer = generate_with_retry(PROMPT.format(context=context, question=item["q"])).text
+            answer = cache.get(item["q"])
+            if answer is None:
+                context = "\n\n".join(f"[page {c['page']}]\n{c['text']}" for _, c in results)
+                try:
+                    answer = generate_with_retry(
+                        PROMPT.format(context=context, question=item["q"])
+                    ).text or ""
+                except Exception as e:
+                    errors += 1
+                    print(f"      answer error (skipped): {str(e)[:90]}")
+                    continue
+                cache[item["q"]] = answer
+                with open(cache_file, "w", encoding="utf-8") as f:
+                    json.dump(cache, f, ensure_ascii=False, indent=1)
+                time.sleep(2)  # be gentle with the API
             ok = check_answer(item, answer)
             if ok is not None:
                 ans_total += 1
                 ans_pass += int(ok)
                 print(f"      answer check: {'PASS' if ok else 'FAIL'}")
-            time.sleep(1)  # be gentle with rate limits
 
     recall = hits / scored if scored else 0
     mrr = rr_sum / scored if scored else 0
@@ -74,6 +95,11 @@ def main():
     print(f"MRR:       {mrr:.2f}")
     if args.answers and ans_total:
         print(f"Answer accuracy (auto-checked): {ans_pass}/{ans_total}")
+
+    if errors:
+        print(f"\n{errors} question(s) failed because the server was busy.")
+        print("Run the same command again to finish them. Nothing was added to results.csv yet.")
+        return
 
     new_file = not os.path.exists("results.csv")
     with open("results.csv", "a", newline="", encoding="utf-8") as f:

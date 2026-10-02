@@ -103,7 +103,7 @@ Context:
 
 Question: {question}
 Answer:"""
-def generate_with_retry(prompt, retries=5):
+def generate_with_retry(prompt, retries=6):
     for attempt in range(retries):
         try:
             return client.models.generate_content(model=GEN_MODEL, contents=prompt)
@@ -111,7 +111,7 @@ def generate_with_retry(prompt, retries=5):
             temporary = "503" in str(e) or "429" in str(e)
             if attempt == retries - 1 or not temporary:
                 raise
-            wait = 3 * 2 ** attempt
+            wait = min(5 * 2 ** attempt, 60)
             print(f"Server busy, retrying in {wait}s...")
             time.sleep(wait)
 

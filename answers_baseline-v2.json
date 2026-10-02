@@ -1,0 +1,3 @@
+{
+ "How do I use Goal Seek?": "Based on the document, follow these steps to use Goal Seek:\n\n* **Step 1:** Select the Profit cell, go to the **Data** tab, click on **What-if Analysis**, and select **Goal seek** (p. 28).\n* **Step 2:** In the Goal Seek dialog box (p. 29):\n  * **Set cell:** Select the result cell (i.e. Profit).  \n  * **To value:** Enter the target value (i.e. desired profit [2000]).  \n  * **By changing cell:** Select the input cell (i.e. Qty).  \n* **Step 3:** Click **OK**. Excel automatically calculates and displays the required input value. Click **OK** to apply the result (p. 29)."
+}

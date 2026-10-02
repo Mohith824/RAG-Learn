@@ -13,5 +13,15 @@
   {"q": "How do I create a scenario in Scenario Manager?", "pages": [26, 27]},
   {"q": "What was Mohith's total marks?", "pages": [4], "keywords": ["266"]},
   {"q": "What is the grand total in the pivot table of sales by region and product?", "pages": [21], "keywords": ["139500"]},
-  {"q": "What is VLOOKUP?", "pages": [], "should_refuse": true}
-]   
+  {"q": "What is VLOOKUP?", "pages": [], "should_refuse": true},
+  {"q": "How do I remove extra spaces from text?", "pages": [32]},
+  {"q": "How do I highlight cells greater than a value?", "pages": [22, 36]},
+  {"q": "What is the formula for Net Pay?", "pages": [42]},
+  {"q": "What is Ravi's total marks?", "pages": [4], "keywords": ["272"]},
+  {"q": "What is the profit shown in the summary sheet?", "pages": [40, 41], "keywords": ["445"]},
+  {"q": "How much quantity is needed to reach a profit of 2000 using Goal Seek?", "pages": [29, 30], "keywords": ["227"]},
+  {"q": "What is the cost after discount of the laptop in the inventory sheet?", "pages": [43], "keywords": ["50400"]},
+  {"q": "Which employee has the highest basic pay?", "pages": [42], "keywords": ["Ram"]},
+  {"q": "Which online platform was used for the mobile order?", "pages": [44, 45], "keywords": ["amazon"]},
+  {"q": "What profit does the Scenario Summary show when quantity is 300?", "pages": [28], "keywords": ["2640"]}
+]

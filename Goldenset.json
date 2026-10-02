@@ -1,0 +1,17 @@
+[
+  {"q": "How do I use Goal Seek?", "pages": [28, 29]},
+  {"q": "What is the formula for Travelling Allowance in the salary worksheet?", "pages": [42]},
+  {"q": "How do I import data from a CSV file into Excel?", "pages": [8, 9]},
+  {"q": "What are the rules to follow while writing a CSV file?", "pages": [8]},
+  {"q": "How do I split a name into name and surname columns?", "pages": [11]},
+  {"q": "How do I create a pivot chart?", "pages": [20, 21]},
+  {"q": "What does the COUNTBLANK function do?", "pages": [7]},
+  {"q": "How do I apply data validation for whole numbers?", "pages": [16, 17]},
+  {"q": "How is DATEDIF used to calculate the number of years from date of birth?", "pages": [34]},
+  {"q": "How do I record a macro?", "pages": [46, 47]},
+  {"q": "What is the formula for Profit in the what-if analysis?", "pages": [26]},
+  {"q": "How do I create a scenario in Scenario Manager?", "pages": [26, 27]},
+  {"q": "What was Mohith's total marks?", "pages": [4], "keywords": ["266"]},
+  {"q": "What is the grand total in the pivot table of sales by region and product?", "pages": [21], "keywords": ["139500"]},
+  {"q": "What is VLOOKUP?", "pages": [], "should_refuse": true}
+]   
